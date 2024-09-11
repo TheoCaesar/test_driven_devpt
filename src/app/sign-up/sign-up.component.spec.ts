@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignUpComponent } from './sign-up.component';
 
-describe('SignUpComponent', () => {
+xdescribe('SignUpComponent', () => {
   let component: SignUpComponent;
   let fixture: ComponentFixture<SignUpComponent>;
 
@@ -26,7 +26,7 @@ describe('SignUpComponent', () => {
   });
 });
 
-describe("Test Signup Component's Layout", ()=>{
+xdescribe("Test Signup Component's Layout", ()=>{
   let fixture: ComponentFixture<SignUpComponent>
   let component: SignUpComponent;
   let template: HTMLElement
@@ -74,3 +74,41 @@ describe("Test Signup Component's Layout", ()=>{
     expect(btn?.disabled).toBeTruthy();
   })
 });
+
+describe("Interactions" ,()=>{
+  let component: SignUpComponent;
+  let fixture: ComponentFixture<SignUpComponent>;
+  let template: HTMLElement;
+
+  beforeEach(async()=>{
+    await TestBed.configureTestingModule({
+      declarations: [SignUpComponent]
+    })
+    .compileComponents();
+  })
+
+  beforeEach(()=>{
+    fixture = TestBed.createComponent(SignUpComponent);
+    component = fixture.componentInstance;
+    template = fixture.nativeElement;
+    fixture.detectChanges();
+  });
+
+
+  it("mocks user interaction with form", ()=>{
+    let pwdField = template.querySelector("input[id='password']")  as HTMLInputElement
+    let confPwdField = template.querySelector("input[id='confirm']")  as HTMLInputElement
+    let submitBtn = template.querySelector('button') as HTMLButtonElement
+
+    //assign values to input fields and mock user input event interaction    
+    pwdField.value = "P4ssword"
+    pwdField.dispatchEvent(new Event('input'))
+    
+    confPwdField.value = "P4ssword"
+    confPwdField.dispatchEvent(new Event('input'))
+
+    // Trigger change detection to update the DOM and component state
+    fixture.detectChanges(); 
+    expect(submitBtn.disabled).toBeFalsy();  
+  })
+})

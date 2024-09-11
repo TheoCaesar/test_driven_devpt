@@ -7,10 +7,14 @@
     <input type="email" id="email" placeholder="Email">
 
     <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Password">
+    <input type="password" id="password" placeholder="Password"
+     (input)="onInputPwd($event)">
     
     <label for="confirm">Confirm Password</label>
-    <input type="password" id="confirm" placeholder="Confirm Password">
+    <input type="password" id="confirm" placeholder="Confirm Password"
+     (input)="onInputConfirm($event)">
 
-    <button type="submit" disabled>Sign Up</button>
+    <button type="submit" [disabled]="isDisabled">Sign Up</button>
 </form>
+
+{{pwd1}} {{pwd2}}
