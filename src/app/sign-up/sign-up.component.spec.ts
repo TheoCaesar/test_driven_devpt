@@ -94,6 +94,10 @@ describe("Interactions" ,()=>{
     fixture.detectChanges();
   });
 
+  it ("disable submit initially", ()=>{
+    let btn = template.querySelector('button[type="submit"]') as HTMLButtonElement
+    expect(btn?.disabled).toBeTruthy()
+  })
 
   it("mocks user interaction with form", ()=>{
     let pwdField = template.querySelector("input[id='password']")  as HTMLInputElement
