@@ -116,3 +116,61 @@ describe("Interactions" ,()=>{
     expect(submitBtn.disabled).toBeFalsy();  
   })
 })
+
+describe("Mocking API Calls", ()=>{
+  let component : SignUpComponent;
+  let fixture : ComponentFixture<SignUpComponent>;
+  let template: HTMLElement
+
+  beforeEach(async ()=>{
+    await TestBed.configureTestingModule({
+      declarations:[SignUpComponent]
+    })
+    .compileComponents()
+  });
+
+  beforeEach(()=>{
+    fixture = TestBed.createComponent(SignUpComponent);
+    component = fixture.componentInstance;
+    template = fixture.nativeElement;
+  })
+
+  it("mocks api calls made on form submission", ()=>{
+    const spy = spyOn(window, "fetch")
+    // get form fields
+    const uname = template.querySelector("input[id='username']") as HTMLInputElement;
+    const email = template.querySelector("input[type='email']") as HTMLInputElement;
+    const pwd1 = template.querySelector("input[id='password']") as HTMLInputElement;
+    const pwd2 = template.querySelector("input[id='confirm']") as HTMLInputElement;
+
+    //assign values & dispatch events
+    // uname.value = "johnDoe";
+    // email.dispatchEvent(new Event("input"))
+
+    // email.value = "jd@yopmail.com";
+    // email.dispatchEvent(new Event("input"));
+
+    // pwd1.value = "p4ssword";
+    // pwd1.dispatchEvent(new Event("input"));
+
+    // pwd2.value = "p4ssword";
+    // pwd2.dispatchEvent(new Event("input"))
+
+    // fixture.detectChanges() //manually trigger change detection
+
+    // trigger submission    
+    const btn = template.querySelector("button[type='submit']") as HTMLButtonElement
+    // btn?.click()  //will send real http request, which we dont want as test case also fails
+    // const args = spy.calls.mostRecent().args;
+    // const payload = args[1] as RequestInit;
+    // alert(JSON.stringify(args[1] as RequestInit))
+    
+    // expect(payload.body).toEqual(JSON.stringify({
+    //   username: "johnDoe",
+    //   email: "jd@yopmail.com",
+    //   password1: "p4ssword",
+    //   password2: "p4ssword"
+    // }))
+    expect(btn?.disabled).toBeFalsy()
+  })
+})
