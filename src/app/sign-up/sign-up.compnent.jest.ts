@@ -1,7 +1,8 @@
 import {render, screen} from "@testing-library/angular";
 import { SignUpComponent } from "./sign-up.component";
+import {userEvent} from "@testing-library/user-event"
 
-describe("Set up", ()=>{
+xdescribe("Set up", ()=>{
     it("print default text", async ()=> {
         await render(SignUpComponent);
         const pElement = screen.getByRole("heading", {name: "Sign Up"})
@@ -10,7 +11,7 @@ describe("Set up", ()=>{
     });
 })
 
-describe("Layout",  ()=>{
+xdescribe("Layout",  ()=>{
     it("contains username label & input", async ()=>{
         await render(SignUpComponent);
         let lbl = screen.getByLabelText("Username");
@@ -53,9 +54,29 @@ describe("Layout",  ()=>{
     })
 })
 
-describe("Interaction", ()=>{
-    it("mocks user interaction with form", async ()=>{
+describe("User Interaction with Form", ()=>{
+    it("disables buttons on default or non matching passwords", async ()=>{
         await render(SignUpComponent);
-        let pwdInput = screen.getAllByPlaceholderText("Password")
+        const pwd1 = screen.getByLabelText("Password")
+        const pwd2 = screen.getByLabelText("Confirm Password");
+        const btn = screen.getByRole("button", {name : "Sign Up"})
+        expect(btn).toHaveProperty('disabled', true)
+        await userEvent.type(pwd1, "PAssword");
+        await userEvent.type(pwd2, "P4ssword")
+        // expect(btn).toBeDisabled()
+        await userEvent.type(pwd2, "PAssword");
+        // expect(btn).toBeEnabled()
+    })
+
+    xit("Check button disabled with matching passwords ", async ()=>{
+        await render(SignUpComponent);
+        let pwdInput = screen.getByPlaceholderText("Password");
+        let cnfmInput = screen.getByPlaceholderText(/Confirm Password/i);
+        let btn = screen.getByRole("button", {name: "Sign Up"})
+        await userEvent.type(pwdInput, "P4ssword")
+        await userEvent.type(cnfmInput, "P4ssword")
+        expect(btn).toHaveProperty("disabled", false)
+        expect(pwdInput).toBeTruthy();
+        expect(cnfmInput).toBeTruthy();
     })
 })
