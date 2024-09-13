@@ -1,6 +1,7 @@
 import {render, screen} from "@testing-library/angular";
 import { SignUpComponent } from "./sign-up.component";
 import {userEvent} from "@testing-library/user-event"
+import "whatwg-fetch"
 
 xdescribe("Set up", ()=>{
     it("print default text", async ()=> {
@@ -54,7 +55,7 @@ xdescribe("Layout",  ()=>{
     })
 })
 
-describe("User Interaction with Form", ()=>{
+xdescribe("User Interaction with Form", ()=>{
     it("disables buttons on default or non matching passwords", async ()=>{
         await render(SignUpComponent);
         const pwd1 = screen.getByLabelText("Password")
@@ -78,5 +79,39 @@ describe("User Interaction with Form", ()=>{
         expect(btn).toHaveProperty("disabled", false)
         expect(pwdInput).toBeTruthy();
         expect(cnfmInput).toBeTruthy();
+    })
+})
+
+describe("Mocking API Requests", ()=>{
+    it("mock post request on form submission", async()=>{
+        const spy = jest.spyOn(window, 'fetch')
+        await render(SignUpComponent);
+        let uname = screen.getByLabelText("Username");
+        let email = screen.getByLabelText("Email");
+        let pwd1 = screen.getByLabelText("Password")
+        let pwd2 = screen.getByLabelText("Confirm Password");
+
+        await userEvent.type(uname, "johnDoe");
+        await userEvent.type(email, "jd@yopmail.com");
+        await userEvent.type(pwd1, "p4ssword")
+        await userEvent.type(pwd2, "p4ssword");
+
+        expect(uname).toBeInTheDocument();
+        expect(email).toBeInTheDocument();
+        expect(pwd1).toBeInTheDocument();
+        expect(pwd2).toBeInTheDocument(); 
+
+        const btn = screen.getByRole('button', {name: "Sign Up"}) 
+        await userEvent.click(btn);
+        //get api call history (first)
+        const args = spy.mock.calls[0];
+        const payload = args[1] as RequestInit;
+        console.log(args)
+        expect(payload.body).toEqual(JSON.stringify({
+            username: "johnDoe",
+            email: "jd@yopmail.com",
+            password1: "p4ssword",
+            password2: "p4ssword"
+        }))
     })
 })
