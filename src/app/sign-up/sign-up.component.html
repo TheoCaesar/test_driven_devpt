@@ -1,0 +1,21 @@
+<h1>Sign Up</h1>
+<form (ngSubmit)="onSubmit()">
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Username" (input)="setUsername($event)">
+    
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Email" (input)="setEmail($event)">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Password"
+     (input)="onInputPwd($event)">
+    
+    <label for="confirm">Confirm Password</label>
+    <input type="password" id="confirm" placeholder="Confirm Password"
+     (input)="onInputConfirm($event)">
+
+    <button type="submit" [disabled]="isDisabled">Sign Up</button>
+</form>
+
+{{username}} {{email}}
+{{pwd1}} {{pwd2}}
